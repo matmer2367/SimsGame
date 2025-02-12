@@ -37,7 +37,10 @@ class GameObject:
         rx, ry = self.getPivotPos()
         w, h = self.getBoundingSurfaceDimenstion()
         trectx, trecty = self.transform.get_transformed_isometric_screen_position(rx, ry)
-        return trectx+self.draw_offset_x*self.cam.s <= x <= trectx+self.draw_offset_x*self.cam.s+w*self.cam.s and trecty+self.draw_offset_y*self.cam.s <= y <= trecty+self.draw_offset_y*self.cam.s+h*self.cam.s
+
+        cam_s = self.cam.s
+
+        return trectx+self.draw_offset_x*cam_s <= x <= trectx+self.draw_offset_x*cam_s+w*cam_s and trecty+self.draw_offset_y*cam_s <= y <= trecty+self.draw_offset_y*cam_s+h*cam_s
     
     def drawGameObject(self):
         dx, dy = self.x_pivot, self.y_pivot

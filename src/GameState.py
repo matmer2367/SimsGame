@@ -18,8 +18,6 @@ class GameState:
         self.screen: pygame.Surface = screen
         # map
         self.map = IMap.instance
-        self.map_data = self.map.data
-        self.map_height, self.map_width = self.map.height, self.map.width
         self.tileSize = self.map.tile_size
 
         self.game_objects: List[GameObject] = []
@@ -60,16 +58,22 @@ class GameState:
     def mouse_pressed_right_out_event(self, pos: Tuple[float, float]):
         x, y = pos
         tx, ty = self.transform.get_transformed_isometric_world_position(x, y)
-        if 0 <= tx <= self.map_width*self.tileSize and 0 <= ty <= self.map_height*self.tileSize:
+
+        tileSize = self.map.tile_size
+        map_width = self.map.width
+        map_height = self.map.height
+
+        if 0 <= tx <= map_width*tileSize and 0 <= ty <= map_height*tileSize:
             self.game_objects.append(self.create_dummy_debug_person((tx, ty)))
 
     # game object creation functions
     def create_dummy_debug_person(self, pos: Tuple[float, float]):
         x, y = pos
-        object_rect_width = self.tileSize * .6
-        object_rect = pygame.Surface((object_rect_width, 2*self.tileSize-object_rect_width/2))
+        tileSize = self.map.tile_size
+        object_rect_width = tileSize * .6
+        object_rect = pygame.Surface((object_rect_width, 2*tileSize-object_rect_width/2))
         object_rect.fill((255,0,0))
-        return Person(x, y, object_rect, -object_rect_width/2, -2*self.tileSize+object_rect_width/2, debug_draw_mode=True, selectable_hover_display=True)
+        return Person(x, y, object_rect, -object_rect_width/2, -2*tileSize+object_rect_width/2, debug_draw_mode=True, selectable_hover_display=True)
 
     def load_isometric_tile_texture(self, path, sheet_rows, sheet_cols, sheet_x_selector, sheet_y_selector) -> int:
         texture_sheet = pygame.image.load(path)
@@ -110,28 +114,36 @@ class GameState:
         self.screen.fill((10,5,10))
         game_objects_draw_query: List[GameObject] = []
 
+        map_height = self.map.height
+        map_width = self.map.width
+        tileSize = self.map.tile_size
+
+        cam_s = self.cam.s
+
+        curr_mouse_position = self.mouse.curr_mouse_position
+
         # Map Draw
         yp_start = 0
         xp_start = 0
         xp = xp_start
         yp = yp_start
         yp_movement = True
-        for i in range(self.map_width*self.map_height):
-            if self.transform.isometric_rect_in_viewport((xp*self.tileSize, yp*self.tileSize, self.tileSize, self.tileSize)):
+        for i in range(map_width*map_height):
+            if self.transform.isometric_rect_in_viewport((xp*tileSize, yp*tileSize, tileSize, tileSize)):
                 # MAP TILE SELECTION PART ##########################################################################################################
-                dx, dy = self.transform.get_transformed_isometric_screen_position(xp*self.tileSize, yp*self.tileSize)
-                self.screen.blit(pygame.transform.scale(self.isometric_textures_sprites[self.grass_terrain],(self.tileSize*2*self.cam.s,self.tileSize*self.cam.s)), (dx-self.tileSize*self.cam.s, dy))
+                dx, dy = self.transform.get_transformed_isometric_screen_position(xp*tileSize, yp*tileSize)
+                self.screen.blit(pygame.transform.scale(self.isometric_textures_sprites[self.grass_terrain],(tileSize*2*cam_s,tileSize*cam_s)), (dx-tileSize*cam_s, dy))
                 
-                if self.mouse_pos_in_world[0]//self.tileSize == xp and self.mouse_pos_in_world[1]//self.tileSize == yp:
-                        self.transform.drawTransformedIsometricRect((255,255,255), xp*self.tileSize, yp*self.tileSize, self.tileSize, self.tileSize)
+                if self.mouse_pos_in_world[0]//tileSize == xp and self.mouse_pos_in_world[1]//self.tileSize == yp:
+                        self.transform.drawTransformedIsometricRect((255,255,255), xp*tileSize, yp*tileSize, tileSize, tileSize)
                 
                 for go in self.game_objects_map_query.get_object_list_at(xp, yp):
                     game_objects_draw_query.append(go)
             
-            if yp >= self.map_height-1:
+            if yp >= map_height-1:
                 yp_movement = False
             if yp_movement:
-                if yp <= 0 or xp >= self.map_width-1:
+                if yp <= 0 or xp >= map_width-1:
                     yp_start += 1
                     yp = yp_start
                     xp = 0
@@ -139,10 +151,10 @@ class GameState:
                     xp += 1
                     yp -= 1
             else:
-                if yp <= 0 or xp >= self.map_width-1:
+                if yp <= 0 or xp >= map_width-1:
                     xp_start += 1
                     xp = xp_start
-                    yp = self.map_height-1
+                    yp = map_height-1
                 else:
                     xp += 1
                     yp -= 1
@@ -154,7 +166,7 @@ class GameState:
         # object selection identification
         for i in range(len(game_objects_draw_query)):
             o = game_objects_draw_query[i]
-            if o.isInObjectBounds(self.curr_mouse_position):
+            if o.isInObjectBounds(curr_mouse_position):
                 mouse_hover_highlight_object_index = i
 
         # draw all game objects
