@@ -1,5 +1,5 @@
 import pygame
-import keyboard
+import singletons.IKeyboard as IKeyboard
 
 from GameState import GameState
 
@@ -19,6 +19,12 @@ def main():
     screen = pygame.display.set_mode((1080, 720), pygame.RESIZABLE, vsync=1)
     clock = pygame.time.Clock()
     
+    l = []
+
+    l.append(None)
+
+    print(len(l))
+
     singletons.IMap.instance = singletons.IMap.IMap(game_file.load("../res/map.yaml")["map"], 10)
     singletons.ICamera.instance = singletons.ICamera.ICamera(screen.get_width()/2,(screen.get_height()/2)+singletons.IMap.instance.height*singletons.IMap.instance.tile_size/2)
     singletons.ITransform.instance = singletons.ITransform.ITransform(screen)
@@ -28,7 +34,7 @@ def main():
     singletons.ICamera.instance.transform = singletons.ITransform.instance
     singletons.ICamera.instance.map = singletons.IMap.instance
 
-    singletons.IMouse.instance.set_callbacks(singletons.ICamera.instance.update_mousewheel_zoom)
+    singletons.IMouse.instance.add_callbacks_to_listener(singletons.ICamera.instance.update_mousewheel_zoom)
 
     singletons.test_instances.run()
 
@@ -39,7 +45,7 @@ def main():
             if event.type == pygame.QUIT:
                 running_value = False
 
-            keyboard.update_keystates(event)
+            IKeyboard.update_keystates(event)
             game_state.check_events(event)
 
         game_state.update()

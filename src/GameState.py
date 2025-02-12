@@ -12,7 +12,7 @@ import singletons.ITransform as ITransform
 from singletons.IMouse import IMouse
 import singletons
 
-import keyboard
+import singletons.IKeyboard as IKeyboard
 
 class GameState:
     def __init__(self, screen):
@@ -31,7 +31,7 @@ class GameState:
         #self.transform = transform.create(screen, self.cam)
 
         self.mouse = singletons.IMouse.instance
-        self.mouse.set_callbacks(mouse_pressed_right_out_callback=self.mouse_pressed_right_out_event)
+        self.mouse.add_callbacks_to_listener(mouse_pressed_right_out_callback=self.mouse_pressed_right_out_event)
 
         self.mouse_pos_in_world: Tuple[float, float] = (0,0)
 
@@ -76,13 +76,13 @@ class GameState:
         self.mouse.update_based_on_event(event)
 
     def keyboard_control_update(self):
-        if keyboard.keys[pygame.K_UP]:
+        if IKeyboard.keys[pygame.K_UP]:
             self.cam.y -= self.cam_keyboard_movement_speed/self.cam.s
-        if keyboard.keys[pygame.K_DOWN]:
+        if IKeyboard.keys[pygame.K_DOWN]:
             self.cam.y += self.cam_keyboard_movement_speed/self.cam.s
-        if keyboard.keys[pygame.K_RIGHT]:
+        if IKeyboard.keys[pygame.K_RIGHT]:
             self.cam.x += self.cam_keyboard_movement_speed/self.cam.s
-        if keyboard.keys[pygame.K_LEFT]:
+        if IKeyboard.keys[pygame.K_LEFT]:
             self.cam.x -= self.cam_keyboard_movement_speed/self.cam.s
 
     def update_camera(self):
