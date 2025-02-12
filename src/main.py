@@ -1,5 +1,4 @@
 import pygame
-import singletons.IKeyboard as IKeyboard
 
 from GameState import GameState
 
@@ -9,6 +8,7 @@ import singletons.ICamera
 import singletons.IMap
 import singletons.IMouse
 import singletons.ITransform
+import singletons.IKeyboard as IKeyboard
 import singletons.test_instances
 
 def main():
@@ -46,7 +46,7 @@ def main():
                 running_value = False
 
             IKeyboard.update_keystates(event)
-            game_state.check_events(event)
+            singletons.IMouse.instance.update_based_on_event(event)
 
         game_state.update()
         game_state.render()

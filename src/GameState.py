@@ -71,9 +71,6 @@ class GameState:
         texture.set_colorkey((0,0,0))
         self.isometric_textures_sprites.append(texture)
         return len(self.isometric_textures_sprites)-1
-    
-    def check_events(self, event):
-        self.mouse.update_based_on_event(event)
 
     def keyboard_control_update(self):
         if IKeyboard.keys[pygame.K_UP]:
