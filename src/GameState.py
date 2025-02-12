@@ -8,7 +8,7 @@ from Utils import fmath
 import singletons.ICamera as ICamera
 import singletons.ITransform as ITransform
 
-from mouse import Mouse
+from singletons.IMouse import IMouse
 import singletons
 
 import keyboard
@@ -29,11 +29,11 @@ class GameState:
         #self.cam = Camera(screen.get_width()/2,(screen.get_height()/2)+self.map_height*self.tileSize/2)
         #self.transform = transform.create(screen, self.cam)
 
-        self.mouse = Mouse(self.cam.update_mousewheel_zoom,
-                           self.mouse_pressed_left_in_event,
-                           self.mouse_pressed_left_out_event,
-                           self.mouse_pressed_right_in_event,
-                           self.mouse_pressed_right_out_event)
+        self.mouse = IMouse(self.cam.update_mousewheel_zoom)#,
+                           #self.mouse_pressed_left_in_event,
+                           #self.mouse_pressed_left_out_event,
+                           #self.mouse_pressed_right_in_event,
+                           #self.mouse_pressed_right_out_event)
         
         self.mouse_pos_in_world: Tuple[float, float] = (0,0)
 

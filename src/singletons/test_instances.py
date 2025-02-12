@@ -2,6 +2,7 @@ import singletons
 import singletons.ICamera
 import singletons.ICameraDragController
 import singletons.IMap
+import singletons.IMouse
 import singletons.ITransform
 
 def run():
@@ -21,4 +22,8 @@ def run():
 
     map: singletons.IMap.IMap = singletons.IMap.instance
     assert map is not None
+
+    mouse: singletons.IMouse.IMouse = singletons.IMouse.instance
+    assert mouse is not None
+    assert mouse.camera_drag_controller is not None
     

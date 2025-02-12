@@ -7,6 +7,7 @@ import game_file
 import singletons
 import singletons.ICamera
 import singletons.IMap
+import singletons.IMouse
 import singletons.ITransform
 import singletons.test_instances
 
@@ -22,6 +23,7 @@ def main():
     singletons.ICamera.instance = singletons.ICamera.ICamera(screen.get_width()/2,(screen.get_height()/2)+singletons.IMap.instance.height*singletons.IMap.instance.tile_size/2)
     singletons.ITransform.instance = singletons.ITransform.ITransform(screen)
     singletons.ICameraDragController.instance = singletons.ICameraDragController.ICameraDragController()
+    singletons.IMouse.instance = singletons.IMouse.IMouse()
 
     singletons.ICamera.instance.transform = singletons.ITransform.instance
     singletons.ICamera.instance.map = singletons.IMap.instance
