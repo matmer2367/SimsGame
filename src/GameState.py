@@ -6,6 +6,7 @@ from map_gameObject_query import Map_GameObject_Query
 from Utils import fmath
 
 import singletons.ICamera as ICamera
+import singletons.IMouse
 import singletons.ITransform as ITransform
 
 from singletons.IMouse import IMouse
@@ -29,12 +30,9 @@ class GameState:
         #self.cam = Camera(screen.get_width()/2,(screen.get_height()/2)+self.map_height*self.tileSize/2)
         #self.transform = transform.create(screen, self.cam)
 
-        self.mouse = IMouse(self.cam.update_mousewheel_zoom)#,
-                           #self.mouse_pressed_left_in_event,
-                           #self.mouse_pressed_left_out_event,
-                           #self.mouse_pressed_right_in_event,
-                           #self.mouse_pressed_right_out_event)
-        
+        self.mouse = singletons.IMouse.instance
+        self.mouse.set_callbacks(mouse_pressed_right_out_callback=self.mouse_pressed_right_out_event)
+
         self.mouse_pos_in_world: Tuple[float, float] = (0,0)
 
         # isometric textures list setup
@@ -45,16 +43,7 @@ class GameState:
         # mouse
         self.curr_mouse_position = pygame.mouse.get_pos()
 
-    # mouse callback functions
-    def mouse_pressed_left_in_event(self, pos: Tuple[float, float]):
-        x, y = pos
-
-    def mouse_pressed_left_out_event(self, pos: Tuple[float, float]):
-        x, y = pos
-
-    def mouse_pressed_right_in_event(self, pos: Tuple[float, float]):
-        x, y = pos
-
+    
     def mouse_pressed_right_out_event(self, pos: Tuple[float, float]):
         x, y = pos
         tx, ty = self.transform.get_transformed_isometric_world_position(x, y)

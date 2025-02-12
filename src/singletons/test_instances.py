@@ -26,4 +26,5 @@ def run():
     mouse: singletons.IMouse.IMouse = singletons.IMouse.instance
     assert mouse is not None
     assert mouse.camera_drag_controller is not None
+    assert mouse.camera is not None
     

@@ -1,8 +1,8 @@
 import pygame
 from Utils import fmath
-import math
 from typing import Callable, Tuple, List
 import singletons
+import singletons.ICamera
 import singletons.ICameraDragController
 
 class IMouse:
@@ -19,21 +19,24 @@ class IMouse:
         self.mouse_position_in_world = (0,0)
 
         self.curr_mouse_position = pygame.mouse.get_pos()
+        
+        self.camera = singletons.ICamera.instance
+        self.camera_drag_controller = singletons.ICameraDragController.instance
 
-        self.mousewheel_callback = None
+        # Default mouse_wheelcallback
+        self.mousewheel_callback = self.camera.update_mousewheel_zoom
+
         self.mouse_pressed_left_in_callback = None
         self.mouse_pressed_left_out_callback = None
         self.mouse_pressed_right_in_callback = None
         self.mouse_pressed_right_out_callback = None
 
-        self.camera_drag_controller = singletons.ICameraDragController.instance
 
-    def set_callbacks(self, mousewheel_callback: Callable[[int],None] = None,
+    def set_callbacks(self,
                  mouse_pressed_left_in_callback: Callable[[Tuple[int, int]],None] = None,
                  mouse_pressed_left_out_callback: Callable[[Tuple[int, int]],None] = None,
                  mouse_pressed_right_in_callback: Callable[[Tuple[int, int]],None] = None,
                  mouse_pressed_right_out_callback: Callable[[Tuple[int, int]],None] = None):
-        self.mousewheel_callback = mousewheel_callback
         self.mouse_pressed_left_in_callback = mouse_pressed_left_in_callback
         self.mouse_pressed_left_out_callback = mouse_pressed_left_out_callback
         self.mouse_pressed_right_in_callback = mouse_pressed_right_in_callback
@@ -42,10 +45,11 @@ class IMouse:
     def update_based_on_event(self, event: pygame.event.Event):
         self.curr_mouse_position = pygame.mouse.get_pos()
 
-        if event.type == pygame.MOUSEWHEEL and self.mousewheel_callback is not None:
-            self.mousewheel_callback(event.y)
+        if event.type == pygame.MOUSEWHEEL:
+            if self.mousewheel_callback is not None:
+                self.mousewheel_callback(event.y)
              
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.mouse_pressed_left_in_callback is not None:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             self.last_mouse_pressed_in = self.curr_mouse_position
             self.is_pressed = True
 
@@ -57,9 +61,10 @@ class IMouse:
 
                 self.camera_drag_controller.stop_cam_floating()
             else:
-                self.mouse_pressed_left_in_callback(self.curr_mouse_position)
+                if self.mouse_pressed_left_in_callback is not None:
+                    self.mouse_pressed_left_in_callback(self.curr_mouse_position)
 
-        if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.mouse_pressed_left_out_callback is not None:
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             self.event_valid = False
             self.is_pressed = False
             
@@ -77,12 +82,15 @@ class IMouse:
                 self.event_valid = False
             
             if self.event_valid:
-                self.mouse_pressed_left_out_callback(self.curr_mouse_position)
+                if self.mouse_pressed_left_out_callback is not None:
+                    self.mouse_pressed_left_out_callback(self.curr_mouse_position)
 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.BUTTON_RIGHT and self.mouse_pressed_right_in_callback is not None:
-            self.mouse_pressed_right_in_callback(self.curr_mouse_position)        
-        if event.type == pygame.MOUSEBUTTONUP and event.button == pygame.BUTTON_RIGHT and self.mouse_pressed_right_out_callback is not None:
-            self.mouse_pressed_right_out_callback(self.curr_mouse_position)
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.BUTTON_RIGHT:
+            if self.mouse_pressed_right_in_callback is not None:
+                self.mouse_pressed_right_in_callback(self.curr_mouse_position)        
+        if event.type == pygame.MOUSEBUTTONUP and event.button == pygame.BUTTON_RIGHT:
+            if self.mouse_pressed_right_out_callback is not None:
+                self.mouse_pressed_right_out_callback(self.curr_mouse_position)
         if event.type == pygame.MOUSEMOTION:
             if self.is_pressed:
                 self.drag_delta = (self.curr_mouse_position[0]-self.last_mouse_pressed_in[0], self.curr_mouse_position[1]-self.last_mouse_pressed_in[1])

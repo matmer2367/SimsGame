@@ -28,6 +28,8 @@ def main():
     singletons.ICamera.instance.transform = singletons.ITransform.instance
     singletons.ICamera.instance.map = singletons.IMap.instance
 
+    singletons.IMouse.instance.set_callbacks(singletons.ICamera.instance.update_mousewheel_zoom)
+
     singletons.test_instances.run()
 
     game_state = GameState(screen)
