@@ -1,0 +1,30 @@
+- z-deph: 0
+  data:
+    - id: 0
+      name: Grass
+      color: [0, 255, 0]
+    - id: 1
+      name: Stone
+      color: [50, 50, 50]
+    - id: 2
+      name: Water
+      color: [0, 0, 255]
+    - id: 3
+      name: Sand
+      color: [200, 200, 0]
+- z-deph: 1
+  data:
+    - id: 0
+      name: Air
+    - id: 1
+      name: Wood
+      color: [0, 200, 0]
+      shape: rectangle
+      shape-property:
+        margin: [10, 10, 10, 10]
+    - id: 2
+      name: Rock
+      color: [0, 0, 0]
+      shape: circle
+      shape-property:
+        margin: [10, 10, 10, 10]
