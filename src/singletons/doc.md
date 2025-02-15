@@ -1,10 +1,10 @@
 # Creating a Singleton File
 
-File Name: I(Name).py
+File Name: S(Name).py
 
 Every Singletion has to be defined as a **class**
 
-Letter "I" is Needed as Prefix both as filename and classname.
+Letter "S" is Needed as Prefix both as filename and classname.
 
 In every File the last line of code has to look like this:
 

@@ -3,13 +3,13 @@ import math
 from typing import List
 
 import singletons
-import singletons.IMap
-import singletons.IIsometricTransform
+import singletons.SMap
+import singletons.SIsometricTransform
 
-class ICamera:
+class SCamera:
     def __init__(self, x, y, s = 1) -> None:
-        self.transform: singletons.IIsometricTransform.IIsometricTransform = singletons.IIsometricTransform.instance
-        self.map: singletons.IMap.IMap = singletons.IMap.instance
+        self.transform: singletons.SIsometricTransform.SIsometricTransform = singletons.SIsometricTransform.instance
+        self.map: singletons.SMap.SMap = singletons.SMap.instance
 
         self.x = x
         self.y = y
@@ -76,4 +76,4 @@ class ICamera:
         
         self.s = self.zoom_step_counter*self.scale_step
 
-instance: ICamera = None
+instance: SCamera = None

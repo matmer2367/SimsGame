@@ -1,5 +1,5 @@
-import singletons.IIsometricTransform as IIsometricTransform
-import singletons.IMap as IMap
+import singletons.SIsometricTransform as SIsometricTransform
+import singletons.SMap as SMap
 
 from GameObject import GameObject
 from typing import List
@@ -8,8 +8,8 @@ from typing import List
 class Map_GameObject_Query:
     def __init__(self, game_objects: List[GameObject]) -> None:
         self.game_objects = game_objects
-        self.map = IMap.instance
-        self.transform = IIsometricTransform.instance
+        self.map = SMap.instance
+        self.transform = SIsometricTransform.instance
 
         self.object_query_tree: dict = {}
     

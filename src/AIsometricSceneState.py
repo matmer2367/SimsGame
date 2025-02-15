@@ -1,26 +1,26 @@
 import pygame
-import singletons.IMap as IMap
+import singletons.SMap as SMap
 from typing import List, Tuple
 from GameObject import GameObject, Person
 from map_gameObject_query import Map_GameObject_Query
 from Utils import fmath
 
-import singletons.ICamera as ICamera
-import singletons.IMouse
-import singletons.IIsometricTransform as IIsometricTransform
+import singletons.SCamera as SCamera
+import singletons.SMouse
+import singletons.SIsometricTransform as SIsometricTransform
 
-from singletons.IMouse import IMouse
+from singletons.SMouse import SMouse
 import singletons
 
-import singletons.IKeyboard as IKeyboard
+import singletons.SKeyboard as SKeyboard
 from AState import AState
 
-from MouseCallbackList import MouseCallbackList
+from mouse_callback.MouseCallbackList import MouseCallbackList
 
 class AIsometricSceneState(AState):
     def __init__(self, screen):
         super().__init__(screen)
-        self.map = IMap.instance
+        self.map = SMap.instance
         self.tileSize = self.map.tile_size
 
         self.game_objects: List[GameObject] = []

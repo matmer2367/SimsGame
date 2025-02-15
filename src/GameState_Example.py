@@ -4,9 +4,9 @@ from typing import Tuple, List
 from GameObject import Person, GameObject
 import pygame
 from map_gameObject_query import Map_GameObject_Query
-from singletons import IKeyboard
+from singletons import SKeyboard
 
-from MouseCallbackList import MouseCallbackList
+from mouse_callback.MouseCallbackList import MouseCallbackList
 
 class GameState_Example(AIsometricSceneState):
     def __init__(self, screen):
@@ -49,13 +49,13 @@ class GameState_Example(AIsometricSceneState):
         return len(self.isometric_textures_sprites)-1
     
     def concrete_update_keyboard_control(self):
-        if IKeyboard.keys[pygame.K_UP]:
+        if SKeyboard.keys[pygame.K_UP]:
             self.cam.y -= self.cam_keyboard_movement_speed/self.cam.s
-        if IKeyboard.keys[pygame.K_DOWN]:
+        if SKeyboard.keys[pygame.K_DOWN]:
             self.cam.y += self.cam_keyboard_movement_speed/self.cam.s
-        if IKeyboard.keys[pygame.K_RIGHT]:
+        if SKeyboard.keys[pygame.K_RIGHT]:
             self.cam.x += self.cam_keyboard_movement_speed/self.cam.s
-        if IKeyboard.keys[pygame.K_LEFT]:
+        if SKeyboard.keys[pygame.K_LEFT]:
             self.cam.x -= self.cam_keyboard_movement_speed/self.cam.s
     
     def concrete_update_camera(self):

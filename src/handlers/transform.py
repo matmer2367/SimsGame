@@ -1,5 +1,5 @@
 import pygame
-from singletons.ICamera import ICamera
+from singletons.SCamera import SCamera
 
 def get_transformed_cam_on_screen_center(screen_width, screen_height, pcam_x, pcam_y, scale, x, y, width, height):
     return (scale*x+(screen_width/2)*(scale+1)-scale*pcam_x, scale*y+(screen_height/2)*(scale+1)-scale*pcam_y, width*scale, height*scale)
@@ -11,7 +11,7 @@ def isometricTransform(pos):
 class Transform:
     def __init__(self, screen, cam=None) -> None:
         self.screen: pygame.Surface = screen
-        self.cam: ICamera = cam
+        self.cam: SCamera = cam
 
     # Camera Methods
     def get_camera_bounding_box_for_its_current_scale(self, map_width, map_height, tileSize):

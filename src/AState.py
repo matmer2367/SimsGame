@@ -1,20 +1,20 @@
 import pygame
 import singletons
-import singletons.ICamera
-import singletons.IMouse
-import singletons.IIsometricTransform
+import singletons.SCamera
+import singletons.SMouse
+import singletons.SIsometricTransform
 
 import typing
 
-import MouseCallbackList
+import mouse_callback.MouseCallbackList as MouseCallbackList
 
 class AState:
     def __init__(self, screen: pygame.Surface):
         self.screen: pygame.Surface = screen
-        self.cam = singletons.ICamera.instance
-        self.transform = singletons.IIsometricTransform.instance
+        self.cam = singletons.SCamera.instance
+        self.transform = singletons.SIsometricTransform.instance
         
-        self.mouse = singletons.IMouse.instance
+        self.mouse = singletons.SMouse.instance
         self.mouse_callback_list = self.create_mouse_callback_list()
 
         self.mouse_pos_in_world: typing.Tuple[float, float] = (0,0)

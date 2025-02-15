@@ -2,11 +2,11 @@ import singletons
 
 from typing import Tuple, List
 
-import singletons.ICamera
+import singletons.SCamera
 
-class ICameraDragController:
+class SCameraDragController:
     def __init__(self):
-        self.cam = singletons.ICamera.instance
+        self.cam = singletons.SCamera.instance
     
     def set_new_last_position(self) -> None:
         self.cam.last_position[0] = self.cam.x
@@ -35,4 +35,4 @@ class ICameraDragController:
     def calc_drag_current_velocity(self, velocity: Tuple[float, float]) -> List[float]:
         return [velocity[0]/self.cam.s, velocity[1]/self.cam.s]
 
-instance: ICameraDragController = None
+instance: SCameraDragController = None
