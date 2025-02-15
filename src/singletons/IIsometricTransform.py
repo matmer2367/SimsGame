@@ -11,7 +11,7 @@ def isometricTransform(pos):
     x, y = pos
     return (x-y, .5*(x+y))
 
-class ITransform:
+class IIsometricTransform:
     def __init__(self, screen) -> None:
         self.screen: pygame.Surface = screen
         self.cam: singletons.ICamera.ICamera = singletons.ICamera.instance
@@ -145,4 +145,4 @@ class ITransform:
 
         return (((screen_x-screen_width/2)/cam_s)-(screen_width/2-cam_x), ((screen_y-screen_height/2)/cam_s)-(screen_height/2-cam_y))
 
-instance: ITransform = None
+instance: IIsometricTransform = None

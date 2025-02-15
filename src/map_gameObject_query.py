@@ -1,4 +1,4 @@
-import singletons.ITransform as ITransform
+import singletons.IIsometricTransform as IIsometricTransform
 import singletons.IMap as IMap
 
 from GameObject import GameObject
@@ -9,7 +9,7 @@ class Map_GameObject_Query:
     def __init__(self, game_objects: List[GameObject]) -> None:
         self.game_objects = game_objects
         self.map = IMap.instance
-        self.transform = ITransform.instance
+        self.transform = IIsometricTransform.instance
 
         self.object_query_tree: dict = {}
     

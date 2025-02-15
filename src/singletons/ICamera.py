@@ -4,11 +4,11 @@ from typing import List
 
 import singletons
 import singletons.IMap
-import singletons.ITransform
+import singletons.IIsometricTransform
 
 class ICamera:
     def __init__(self, x, y, s = 1) -> None:
-        self.transform: singletons.ITransform.ITransform = singletons.ITransform.instance
+        self.transform: singletons.IIsometricTransform.IIsometricTransform = singletons.IIsometricTransform.instance
         self.map: singletons.IMap.IMap = singletons.IMap.instance
 
         self.x = x

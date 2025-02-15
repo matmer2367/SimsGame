@@ -2,7 +2,7 @@ import pygame
 import singletons
 import singletons.ICamera
 import singletons.IMouse
-import singletons.ITransform
+import singletons.IIsometricTransform
 
 import typing
 
@@ -10,7 +10,7 @@ class AState:
     def __init__(self, screen):
         self.screen: pygame.Surface = screen
         self.cam = singletons.ICamera.instance
-        self.transform = singletons.ITransform.instance
+        self.transform = singletons.IIsometricTransform.instance
         
         self.mouse = singletons.IMouse.instance
         self.mouse_pos_in_world: typing.Tuple[float, float] = (0,0)
@@ -29,8 +29,8 @@ class AState:
         self.cam.keep_camera_in_bounds(self.screen)
 
     def update_mouse_position(self):
-        curr_mouse_position = self.mouse.curr_mouse_position
-        self.mouse_pos_in_world = self.transform.get_transformed_isometric_world_position(curr_mouse_position[0],curr_mouse_position[1])
+        self.curr_mouse_position = self.mouse.curr_mouse_position
+        self.mouse_pos_in_world = self.transform.get_transformed_isometric_world_position(self.curr_mouse_position[0],self.curr_mouse_position[1])
 
     def tick(self):
         raise NotImplementedError(self.tick, self.__class__)

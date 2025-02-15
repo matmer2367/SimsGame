@@ -1,7 +1,7 @@
-from GameState import GameState
+from AIsometricSceneState import AIsometricSceneState
 
 class IStateMachine:
     def __init__(self):
-        self.currentState: GameState = None
+        self.currentState: AIsometricSceneState = None
 
 instance: IStateMachine = None

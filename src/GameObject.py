@@ -1,6 +1,6 @@
 import pygame
 
-import singletons.ITransform as ITransform
+import singletons.IIsometricTransform as IIsometricTransform
 import singletons.ICamera as ICamera
 
 class GameObject:
@@ -21,7 +21,7 @@ class GameObject:
 
         self.selectable_hover_display = selectable_hover_display
 
-        self.transform = ITransform.instance
+        self.transform = IIsometricTransform.instance
         self.cam = ICamera.instance
     
     def get_transformed_isometric_screen_pivot_coordinate(self):
