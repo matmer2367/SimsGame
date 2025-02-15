@@ -13,10 +13,11 @@ from singletons.IMouse import IMouse
 import singletons
 
 import singletons.IKeyboard as IKeyboard
+from State import AState
 
-class GameState:
+class GameState(AState):
     def __init__(self, screen):
-        self.screen: pygame.Surface = screen
+        super().__init__(screen)
         # map
         self.map = IMap.instance
         self.tileSize = self.map.tile_size
@@ -24,24 +25,12 @@ class GameState:
         self.game_objects: List[GameObject] = []
         self.game_objects_map_query = Map_GameObject_Query(self.game_objects)
 
-        # transform
-        self.cam = ICamera.instance
-        self.transform = ITransform.instance
-        #self.cam = Camera(screen.get_width()/2,(screen.get_height()/2)+self.map_height*self.tileSize/2)
-        #self.transform = transform.create(screen, self.cam)
-
-        self.mouse = singletons.IMouse.instance
         self.mouse.add_callbacks_to_listener(mouse_pressed_right_out_callback=self.mouse_pressed_right_out_event)
-
-        self.mouse_pos_in_world: Tuple[float, float] = (0,0)
 
         # isometric textures list setup
         self.isometric_textures_sprites = []
 
         self.grass_terrain = self.load_isometric_tile_texture("../res/sprites/terrain_sheet.png", 6, 3, 0, 0)
-
-        # mouse
-        self.curr_mouse_position = pygame.mouse.get_pos()
 
     
     def mouse_pressed_right_out_event(self, pos: Tuple[float, float]):
@@ -72,7 +61,7 @@ class GameState:
         self.isometric_textures_sprites.append(texture)
         return len(self.isometric_textures_sprites)-1
 
-    def keyboard_control_update(self):
+    def concrete_update_keyboard_control(self):
         if IKeyboard.keys[pygame.K_UP]:
             self.cam.y -= self.cam_keyboard_movement_speed/self.cam.s
         if IKeyboard.keys[pygame.K_DOWN]:
@@ -82,20 +71,13 @@ class GameState:
         if IKeyboard.keys[pygame.K_LEFT]:
             self.cam.x -= self.cam_keyboard_movement_speed/self.cam.s
 
-    def update_camera(self):
-        self.cam.update_physical_movement()
-        self.cam.keep_camera_in_bounds(self.screen)
+    def concrete_update_camera(self):
+        super().default_update_camera()
 
-    def update_mouse_position(self):
-        curr_mouse_position = self.mouse.curr_mouse_position
-        self.mouse_pos_in_world = self.transform.get_transformed_isometric_world_position(curr_mouse_position[0],curr_mouse_position[1])
+    def tick(self):
+        pass
 
-    def update(self):
-        self.keyboard_control_update()
-        self.update_camera()
-        self.update_mouse_position()
-    
-    def render(self):
+    def concrete_render(self, screen):
         self.game_objects_map_query.update()
         self.screen.fill((10,5,10))
         game_objects_draw_query: List[GameObject] = []

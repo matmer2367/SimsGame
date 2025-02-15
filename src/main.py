@@ -1,30 +1,21 @@
 import pygame
 
-from GameState import GameState
+from GameState_Example import GameState_Example
 
 import game_file
 import singletons
 import singletons.ICamera
 import singletons.IMap
 import singletons.IMouse
+import singletons.IStateMachine
 import singletons.ITransform
 import singletons.IKeyboard as IKeyboard
 import singletons.test_instances
 
-def main():
-    running_value = True
+screen: pygame.Surface = None
 
-    # pygame setup
-    pygame.init()
-    screen = pygame.display.set_mode((1080, 720), pygame.RESIZABLE, vsync=1)
-    clock = pygame.time.Clock()
-    
-    l = []
-
-    l.append(None)
-
-    print(len(l))
-
+def initialize_singletons():
+    singletons.IStateMachine.instance = singletons.IStateMachine.IStateMachine()
     singletons.IMap.instance = singletons.IMap.IMap(game_file.load("../res/map.yaml")["map"], 10)
     singletons.ICamera.instance = singletons.ICamera.ICamera(screen.get_width()/2,(screen.get_height()/2)+singletons.IMap.instance.height*singletons.IMap.instance.tile_size/2)
     singletons.ITransform.instance = singletons.ITransform.ITransform(screen)
@@ -34,11 +25,25 @@ def main():
     singletons.ICamera.instance.transform = singletons.ITransform.instance
     singletons.ICamera.instance.map = singletons.IMap.instance
 
-    singletons.IMouse.instance.add_callbacks_to_listener(singletons.ICamera.instance.update_mousewheel_zoom)
-
     singletons.test_instances.run()
 
-    game_state = GameState(screen)
+def main():
+    running_value = True
+
+    # pygame setup
+    pygame.init()
+    global screen
+    screen = pygame.display.set_mode((1080, 720), pygame.RESIZABLE, vsync=1)
+    clock = pygame.time.Clock()
+    
+    initialize_singletons()
+
+    mouse = singletons.IMouse.instance
+    cam = singletons.ICamera.instance
+    state_machine = singletons.IStateMachine.instance
+
+    mouse.add_callbacks_to_listener(cam.update_mousewheel_zoom)
+    state_machine.currentState = GameState_Example(screen)
 
     while running_value:
         for event in pygame.event.get():
@@ -48,8 +53,8 @@ def main():
             IKeyboard.update_keystates(event)
             singletons.IMouse.instance.update_based_on_event(event)
 
-        game_state.update()
-        game_state.render()
+        state_machine.currentState.state_update()
+        state_machine.currentState.state_render()
 
         pygame.display.flip()
         clock.tick(60)

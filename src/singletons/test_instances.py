@@ -3,6 +3,7 @@ import singletons.ICamera
 import singletons.ICameraDragController
 import singletons.IMap
 import singletons.IMouse
+import singletons.IStateMachine
 import singletons.ITransform
 
 def run():
@@ -27,4 +28,7 @@ def run():
     assert mouse is not None
     assert mouse.camera_drag_controller is not None
     assert mouse.camera is not None
+
+    state_machine: singletons.IStateMachine = singletons.IStateMachine.instance
+    assert state_machine is not None
     
