@@ -5,6 +5,7 @@ from GameObject import Person, GameObject
 import pygame
 from map_gameObject_query import Map_GameObject_Query
 from singletons import SKeyboard
+from singletons.SCameraDragController import SCameraDragController
 
 from mouse_callback.MouseCallbackList import MouseCallbackList
 
@@ -18,6 +19,11 @@ class GameState_Example(AIsometricSceneState):
     def create_mouse_callback_list(self) -> MouseCallbackList:
         cbl =  super().create_mouse_callback_list()
         cbl.add_callbacks_to_listener(mouse_pressed_right_out_callback=self.mouse_pressed_right_out_event)
+
+        camera_drag_controller = SCameraDragController()
+        cbl.add_IMouseClickButtons_callbacks(camera_drag_controller)
+        cbl.add_IMouseMotion_callbacks(camera_drag_controller)
+
         return cbl
 
     def mouse_pressed_right_out_event(self, pos: Tuple[float, float]):

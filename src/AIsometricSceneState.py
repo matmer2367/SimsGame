@@ -27,7 +27,7 @@ class AIsometricSceneState(AState):
         self.game_objects_map_query = Map_GameObject_Query(self.game_objects)
 
     def create_mouse_callback_list(self) -> MouseCallbackList:
-        cbl = MouseCallbackList()
+        cbl =  super().create_mouse_callback_list()
         cbl.add_callbacks_to_listener(mousewheel_callback=self.cam.update_mousewheel_zoom)
         return cbl
 

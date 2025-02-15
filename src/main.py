@@ -5,6 +5,7 @@ from GameState_Example import GameState_Example
 import game_file
 import singletons
 import singletons.SCamera
+import singletons.SCameraDragController
 import singletons.SMap
 import singletons.SMouse
 import singletons.SStateMachine
@@ -25,6 +26,8 @@ def initialize_singletons():
     singletons.SCamera.instance.transform = singletons.SIsometricTransform.instance
     singletons.SCamera.instance.map = singletons.SMap.instance
 
+    singletons.SCameraDragController.instance.mouse = singletons.SMouse.instance
+
     singletons.test_instances.run()
 
 def main():
@@ -38,13 +41,13 @@ def main():
     
     initialize_singletons()
 
+    camera = singletons.SCamera.instance
     mouse = singletons.SMouse.instance
     state_machine = singletons.SStateMachine.instance
 
     #mouse.add_callbacks_to_listener(cam.update_mousewheel_zoom)
     state_machine.currentState = GameState_Example(screen)
     mouse.mouse_callback_list = state_machine.currentState.mouse_callback_list
-
     while running_value:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -54,6 +57,7 @@ def main():
             singletons.SMouse.instance.update_based_on_event(event)
 
         state_machine.currentState.state_update()
+        print(camera.velocity)
         state_machine.currentState.state_render()
 
         pygame.display.flip()

@@ -1,38 +1,55 @@
 import singletons
 
+from Utils import fmath
 from typing import Tuple, List
 
 import singletons.SCamera
 
-class SCameraDragController:
+from mouse_callback.interfaces.IMouseClickButtons import IMouseClickButtons
+from mouse_callback.interfaces.IMouseMotion import IMouseMotion
+import singletons.SMouse 
+
+class SCameraDragController(IMouseClickButtons, IMouseMotion):
     def __init__(self):
         self.cam = singletons.SCamera.instance
+        self.mouse = singletons.SMouse.instance
+        self.left_button_pressed = False
+        self.drag_current_vel: List[float] = [0,0]
+
+        self.DRAG_DELTA_THRESHOLD = 30
     
-    def set_new_last_position(self) -> None:
+    def pressed_left_in(self, pos: Tuple[int]) -> None:
+        self.left_button_pressed = True
+
         self.cam.last_position[0] = self.cam.x
         self.cam.last_position[1] = self.cam.y
-    
-    def cam_is_floating(self) -> bool:
-        return self.cam.is_floating
-    
-    def stop_cam_floating(self) -> None:
+
         self.cam.is_floating = False
         self.cam.velocity[0] = 0
         self.cam.velocity[1] = 0
-    
-    def get_cam_velocity_magnitude_threshold(self) -> float:
-        return self.cam.velocity_magnitude_threshold
-    
-    def start_cam_floating(self, velocity: Tuple[float, float]) -> None:
-        self.cam.is_floating = True
-        self.cam.velocity[0] = velocity[0]
-        self.cam.velocity[1] = velocity[1]
-    
-    def update_cam_drag_position(self, last_to_current_position_delta: Tuple[float, float]) -> None:
-        self.cam.x = self.cam.last_position[0]-last_to_current_position_delta[0]/self.cam.s
-        self.cam.y = self.cam.last_position[1]-last_to_current_position_delta[1]/self.cam.s
 
-    def calc_drag_current_velocity(self, velocity: Tuple[float, float]) -> List[float]:
-        return [velocity[0]/self.cam.s, velocity[1]/self.cam.s]
+    def pressed_left_out(self, pos: Tuple[int]) -> None:
+        self.left_button_pressed = False
+            
+        if fmath.get_vector_magnitude(self.drag_current_vel) >= self.cam.velocity_magnitude_threshold:
+            self.cam.is_floating = True
+            self.cam.velocity[0] = -self.drag_current_vel[0]
+            self.cam.velocity[1] = -self.drag_current_vel[1]
+
+            self.drag_current_vel[0] = 0
+            self.drag_current_vel[1] = 0
+
+    def pressed_right_in(self, pos: Tuple[int]) -> None:
+        pass
+
+    def pressed_right_out(self, pos: Tuple[int]) -> None:
+        pass
+
+    def mouse_motion(self, positional_delta: Tuple[int, int], movement_delta: Tuple[int, int]) -> None:
+        if self.left_button_pressed:
+            self.drag_current_vel = [movement_delta[0]/self.cam.s, movement_delta[1]/self.cam.s]
+            if fmath.get_vector_magnitude(positional_delta) >= self.DRAG_DELTA_THRESHOLD:
+                self.cam.x = self.cam.last_position[0]-positional_delta[0]/self.cam.s
+                self.cam.y = self.cam.last_position[1]-positional_delta[1]/self.cam.s
 
 instance: SCameraDragController = None

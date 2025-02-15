@@ -6,7 +6,7 @@ import singletons.SIsometricTransform
 
 import typing
 
-import mouse_callback.MouseCallbackList as MouseCallbackList
+from mouse_callback.MouseCallbackList import MouseCallbackList
 
 class AState:
     def __init__(self, screen: pygame.Surface):
@@ -23,7 +23,7 @@ class AState:
         self.next_state_inquiry: AState = None
     
     def create_mouse_callback_list(self) -> MouseCallbackList:
-        raise NotImplementedError(self.initialize_mouse_callback_list, self.__class__)
+        return MouseCallbackList()
 
     def concrete_update_keyboard_control(self):
         pass
@@ -36,7 +36,7 @@ class AState:
         self.cam.keep_camera_in_bounds(self.screen)
 
     def update_mouse_position(self):
-        self.curr_mouse_position = self.mouse.curr_mouse_position
+        self.curr_mouse_position = pygame.mouse.get_pos()
         self.mouse_pos_in_world = self.transform.get_transformed_isometric_world_position(self.curr_mouse_position[0],self.curr_mouse_position[1])
 
     def tick(self):

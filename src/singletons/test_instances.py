@@ -15,6 +15,7 @@ def run():
     camera_drag_controller: singletons.SCameraDragController.SCameraDragController = singletons.SCameraDragController.instance
     assert camera_drag_controller is not None
     assert camera_drag_controller.cam is not None
+    assert camera_drag_controller.mouse is not None
 
     transform: singletons.SIsometricTransform.SIsometricTransform = singletons.SIsometricTransform.instance
     assert transform is not None
@@ -27,7 +28,6 @@ def run():
     mouse: singletons.SMouse.SMouse = singletons.SMouse.instance
     assert mouse is not None
     assert mouse.camera_drag_controller is not None
-    assert mouse.camera is not None
 
     state_machine: singletons.SStateMachine = singletons.SStateMachine.instance
     assert state_machine is not None
