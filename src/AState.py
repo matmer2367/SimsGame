@@ -6,18 +6,25 @@ import singletons.IIsometricTransform
 
 import typing
 
+import MouseCallbackList
+
 class AState:
-    def __init__(self, screen):
+    def __init__(self, screen: pygame.Surface):
         self.screen: pygame.Surface = screen
         self.cam = singletons.ICamera.instance
         self.transform = singletons.IIsometricTransform.instance
         
         self.mouse = singletons.IMouse.instance
+        self.mouse_callback_list = self.create_mouse_callback_list()
+
         self.mouse_pos_in_world: typing.Tuple[float, float] = (0,0)
         self.curr_mouse_position = pygame.mouse.get_pos()
 
         self.next_state_inquiry: AState = None
     
+    def create_mouse_callback_list(self) -> MouseCallbackList:
+        raise NotImplementedError(self.initialize_mouse_callback_list, self.__class__)
+
     def concrete_update_keyboard_control(self):
         pass
 

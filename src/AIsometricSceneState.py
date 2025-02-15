@@ -15,6 +15,8 @@ import singletons
 import singletons.IKeyboard as IKeyboard
 from AState import AState
 
+from MouseCallbackList import MouseCallbackList
+
 class AIsometricSceneState(AState):
     def __init__(self, screen):
         super().__init__(screen)
@@ -23,6 +25,11 @@ class AIsometricSceneState(AState):
 
         self.game_objects: List[GameObject] = []
         self.game_objects_map_query = Map_GameObject_Query(self.game_objects)
+
+    def create_mouse_callback_list(self) -> MouseCallbackList:
+        cbl = MouseCallbackList()
+        cbl.add_callbacks_to_listener(mousewheel_callback=self.cam.update_mousewheel_zoom)
+        return cbl
 
     def get_tile_image_from_map_coordinate(self, x, y):
         raise NotImplementedError(self.get_tile_image_from_map_coordinate, self.__class__)
@@ -33,7 +40,7 @@ class AIsometricSceneState(AState):
     def draw_game_objects(self, draw_query: Map_GameObject_Query):
         raise NotADirectoryError(self.draw_game_objects, self.__class__)
 
-    def concrete_render(self, screen):
+    def concrete_render(self, screen: pygame.Surface):
         screen.fill((10,5,10))
         self.game_objects_map_query.update()
         game_objects_draw_query: List[GameObject] = []

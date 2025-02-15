@@ -42,8 +42,9 @@ def main():
     cam = singletons.ICamera.instance
     state_machine = singletons.IStateMachine.instance
 
-    mouse.add_callbacks_to_listener(cam.update_mousewheel_zoom)
+    #mouse.add_callbacks_to_listener(cam.update_mousewheel_zoom)
     state_machine.currentState = GameState_Example(screen)
+    mouse.mouse_callback_list = state_machine.currentState.mouse_callback_list
 
     while running_value:
         for event in pygame.event.get():

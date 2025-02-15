@@ -6,15 +6,20 @@ import pygame
 from map_gameObject_query import Map_GameObject_Query
 from singletons import IKeyboard
 
+from MouseCallbackList import MouseCallbackList
+
 class GameState_Example(AIsometricSceneState):
     def __init__(self, screen):
         super().__init__(screen)
 
-        self.mouse.add_callbacks_to_listener(mouse_pressed_right_out_callback=self.mouse_pressed_right_out_event)
-        
         self.isometric_textures_sprites = []
         self.grass_terrain = self.load_isometric_tile_texture("../res/sprites/terrain_sheet.png", 6, 3, 0, 0)
     
+    def create_mouse_callback_list(self) -> MouseCallbackList:
+        cbl =  super().create_mouse_callback_list()
+        cbl.add_callbacks_to_listener(mouse_pressed_right_out_callback=self.mouse_pressed_right_out_event)
+        return cbl
+
     def mouse_pressed_right_out_event(self, pos: Tuple[float, float]):
         x, y = pos
         tx, ty = self.transform.get_transformed_isometric_world_position(x, y)
@@ -83,3 +88,7 @@ class GameState_Example(AIsometricSceneState):
                 dx, dy = o.get_transformed_isometric_screen_drawing_surface_start_coordinate()
                 sw, sh = self.transform.cam_size_conversion_tuple(o.getBoundingSurfaceDimenstion())
                 pygame.draw.rect(self.screen, (255,255,255), (dx, dy, sw, sh), width=2)
+    
+    def concrete_render(self, screen: pygame.Surface):
+        super().concrete_render(screen)
+        # Draw other stuff

@@ -4,6 +4,7 @@ from typing import Callable, Tuple, List
 import singletons
 import singletons.ICamera
 import singletons.ICameraDragController
+from MouseCallbackList import MouseCallbackList
 
 class IMouse:
     def __init__(self):
@@ -23,36 +24,37 @@ class IMouse:
         self.camera = singletons.ICamera.instance
         self.camera_drag_controller = singletons.ICameraDragController.instance
 
-        self.mousewheel_callback: List[Callable] = []
-        self.mouse_pressed_left_in_callback: List[Callable] = []
-        self.mouse_pressed_left_out_callback: List[Callable] = []
-        self.mouse_pressed_right_in_callback: List[Callable] = []
-        self.mouse_pressed_right_out_callback: List[Callable] = []
+        self.mouse_callback_list: MouseCallbackList = None
+
+        #self.mousewheel_callback: List[Callable] = []
+        #self.mouse_pressed_left_in_callback: List[Callable] = []
+        #self.mouse_pressed_left_out_callback: List[Callable] = []
+        #self.mouse_pressed_right_in_callback: List[Callable] = []
+        #self.mouse_pressed_right_out_callback: List[Callable] = []
 
 
-    def add_callbacks_to_listener(self,
-                mousewheel_callback: Callable[[Tuple[int, int]],None] = None,
-                mouse_pressed_left_in_callback: Callable[[Tuple[int, int]],None] = None,
-                mouse_pressed_left_out_callback: Callable[[Tuple[int, int]],None] = None,
-                mouse_pressed_right_in_callback: Callable[[Tuple[int, int]],None] = None,
-                mouse_pressed_right_out_callback: Callable[[Tuple[int, int]],None] = None):
-        if mousewheel_callback is not None:
-            self.mousewheel_callback.append(mousewheel_callback)
-        if mouse_pressed_left_in_callback is not None:
-            self.mouse_pressed_left_in_callback.append(mouse_pressed_left_in_callback)
-        if mouse_pressed_left_out_callback is not None:
-            self.mouse_pressed_left_out_callback.append(mouse_pressed_left_out_callback)
-        if mouse_pressed_right_in_callback is not None:
-            self.mouse_pressed_right_in_callback.append(mouse_pressed_right_in_callback)
-        if mouse_pressed_right_out_callback is not None:
-            self.mouse_pressed_right_out_callback.append(mouse_pressed_right_out_callback)
-
+    #def add_callbacks_to_listener(self,
+    #            mousewheel_callback: Callable[[Tuple[int, int]],None] = None,
+    #            mouse_pressed_left_in_callback: Callable[[Tuple[int, int]],None] = None,
+    #            mouse_pressed_left_out_callback: Callable[[Tuple[int, int]],None] = None,
+    #            mouse_pressed_right_in_callback: Callable[[Tuple[int, int]],None] = None,
+    #            mouse_pressed_right_out_callback: Callable[[Tuple[int, int]],None] = None):
+    #    if mousewheel_callback is not None:
+    #        self.mousewheel_callback.append(mousewheel_callback)
+    #    if mouse_pressed_left_in_callback is not None:
+    #        self.mouse_pressed_left_in_callback.append(mouse_pressed_left_in_callback)
+    #    if mouse_pressed_left_out_callback is not None:
+    #        self.mouse_pressed_left_out_callback.append(mouse_pressed_left_out_callback)
+    #    if mouse_pressed_right_in_callback is not None:
+    #        self.mouse_pressed_right_in_callback.append(mouse_pressed_right_in_callback)
+    #    if mouse_pressed_right_out_callback is not None:
+    #        self.mouse_pressed_right_out_callback.append(mouse_pressed_right_out_callback)
 
     def update_based_on_event(self, event: pygame.event.Event):
         self.curr_mouse_position = pygame.mouse.get_pos()
 
         if event.type == pygame.MOUSEWHEEL:
-            for c in self.mousewheel_callback:
+            for c in self.mouse_callback_list.mousewheel:
                 c(event.y)
              
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -67,7 +69,7 @@ class IMouse:
 
                 self.camera_drag_controller.stop_cam_floating()
             else:
-                for c in self.mouse_pressed_left_in_callback:
+                for c in self.mouse_callback_list.pressed_left_in:
                     c(self.curr_mouse_position)
 
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
@@ -92,10 +94,10 @@ class IMouse:
                     c(self.curr_mouse_position)
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.BUTTON_RIGHT:
-            for c in self.mouse_pressed_right_in_callback:
+            for c in self.mouse_callback_list.pressed_right_in:
                 c(self.curr_mouse_position)        
         if event.type == pygame.MOUSEBUTTONUP and event.button == pygame.BUTTON_RIGHT:
-            for c in self.mouse_pressed_right_out_callback:
+            for c in self.mouse_callback_list.pressed_right_out:
                 c(self.curr_mouse_position)
         if event.type == pygame.MOUSEMOTION:
             if self.is_pressed:
