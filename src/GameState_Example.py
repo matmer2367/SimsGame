@@ -14,6 +14,10 @@ class GameState_Example(AIsometricSceneState):
         super().__init__(screen)
 
         self.isometric_textures_sprites = []
+        self.load_sprites()
+        self.render_image_buffer_map()
+    
+    def load_sprites(self):
         self.grass_terrain = self.load_isometric_tile_texture("../res/sprites/terrain_sheet.png", 6, 3, 0, 0)
     
     def create_mouse_callback_list(self) -> MouseCallbackList:
@@ -54,18 +58,15 @@ class GameState_Example(AIsometricSceneState):
         self.isometric_textures_sprites.append(texture)
         return len(self.isometric_textures_sprites)-1
     
-    def concrete_update_keyboard_control(self):
+    def update_keyboard_control(self):
         if SKeyboard.keys[pygame.K_UP]:
-            self.cam.y -= self.cam_keyboard_movement_speed/self.cam.s
+            self.cam.y -= self.cam.keyboard_movement_speed/self.cam.s
         if SKeyboard.keys[pygame.K_DOWN]:
-            self.cam.y += self.cam_keyboard_movement_speed/self.cam.s
+            self.cam.y += self.cam.keyboard_movement_speed/self.cam.s
         if SKeyboard.keys[pygame.K_RIGHT]:
-            self.cam.x += self.cam_keyboard_movement_speed/self.cam.s
+            self.cam.x += self.cam.keyboard_movement_speed/self.cam.s
         if SKeyboard.keys[pygame.K_LEFT]:
-            self.cam.x -= self.cam_keyboard_movement_speed/self.cam.s
-    
-    def concrete_update_camera(self):
-        super().default_update_camera()
+            self.cam.x -= self.cam.keyboard_movement_speed/self.cam.s
 
     def tick(self):
         pass
@@ -95,6 +96,5 @@ class GameState_Example(AIsometricSceneState):
                 sw, sh = self.transform.cam_size_conversion_tuple(o.getBoundingSurfaceDimenstion())
                 pygame.draw.rect(self.screen, (255,255,255), (dx, dy, sw, sh), width=2)
     
-    def concrete_render(self, screen: pygame.Surface):
-        super().concrete_render(screen)
-        # Draw other stuff
+    def render(self, screen: pygame.Surface):
+        super().render(screen)

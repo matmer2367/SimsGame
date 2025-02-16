@@ -2,7 +2,7 @@ import pygame
 
 from GameState_Example import GameState_Example
 
-import game_file
+import Utils.file_load as file_load
 import singletons
 import singletons.SCamera
 import singletons.SCameraDragController
@@ -17,7 +17,7 @@ screen: pygame.Surface = None
 
 def initialize_singletons():
     singletons.SStateMachine.instance = singletons.SStateMachine.SStateMachine()
-    singletons.SMap.instance = singletons.SMap.SMap(game_file.load("../res/map.yaml")["map"], 10)
+    singletons.SMap.instance = singletons.SMap.SMap(file_load.load("../res/map.yaml")["map"], 10)
     singletons.SCamera.instance = singletons.SCamera.SCamera(screen.get_width()/2,(screen.get_height()/2)+singletons.SMap.instance.height*singletons.SMap.instance.tile_size/2)
     singletons.SIsometricTransform.instance = singletons.SIsometricTransform.SIsometricTransform(screen)
     singletons.SCameraDragController.instance = singletons.SCameraDragController.SCameraDragController()
@@ -41,7 +41,6 @@ def main():
     
     initialize_singletons()
 
-    camera = singletons.SCamera.instance
     mouse = singletons.SMouse.instance
     state_machine = singletons.SStateMachine.instance
 
@@ -54,11 +53,10 @@ def main():
                 running_value = False
 
             SKeyboard.update_keystates(event)
-            singletons.SMouse.instance.update_based_on_event(event)
+            mouse.update_based_on_event(event)
 
-        state_machine.currentState.state_update()
-        print(camera.velocity)
-        state_machine.currentState.state_render()
+        state_machine.currentState.update()
+        state_machine.currentState.render(screen)
 
         pygame.display.flip()
         clock.tick(60)

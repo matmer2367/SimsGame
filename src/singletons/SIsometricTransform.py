@@ -17,6 +17,13 @@ class SIsometricTransform:
         self.cam: singletons.SCamera.SCamera = singletons.SCamera.instance
         self.map: singletons.SMap.SMap = singletons.SMap.instance
 
+    def rect_in_viewport(self, rect_data) -> bool:
+        x1 = rect_data[0]
+        y1 = rect_data[1]
+        x2 = x1+rect_data[2]
+        y2 = y1+rect_data[3]
+        return not (y2 <= 0 or y1 >= self.screen.get_height() or x2 <= 0 or x1 >= self.screen.get_width()) 
+
     # Camera Methods
     def get_camera_bounding_box_for_its_current_scale(self):
         cam_x, cam_y = self.cam.x, self.cam.y
@@ -38,7 +45,16 @@ class SIsometricTransform:
 
         return cam_border_left_x, cam_border_left_y, cam_border_right_x, cam_border_right_y
 
-    def isometric_rect_in_viewport(self, rect_data):
+    def isometric_rect_in_viewport(self, x, y, tileSize):
+        dx, dy = self.get_transformed_isometric_screen_position(x*tileSize, y*tileSize)
+        cam_s = self.cam.s
+        dx_draw, dy_draw = dx-tileSize*cam_s, dy
+        dw_draw, dh_draw = tileSize*2*cam_s, tileSize*cam_s
+
+        return self.rect_in_viewport((dx_draw, dy_draw, dw_draw, dh_draw))
+
+    def isometric_rect_in_viewport_polygon_calculation(self, rect_data):
+        ''' VERY INTENSIVE CALCULATION '''
         x = rect_data[0]
         y = rect_data[1]
         w = rect_data[2]
