@@ -12,13 +12,6 @@ from mouse_callback.MouseCallbackList import MouseCallbackList
 class GameState_Example(AIsometricSceneState):
     def __init__(self, screen):
         super().__init__(screen)
-
-        self.isometric_textures_sprites = []
-        self.load_sprites()
-        self.render_image_buffer_map()
-    
-    def load_sprites(self):
-        self.grass_terrain = self.load_isometric_tile_texture("../res/sprites/terrain_sheet.png", 6, 3, 0, 0)
     
     def create_mouse_callback_list(self) -> MouseCallbackList:
         cbl =  super().create_mouse_callback_list()
@@ -49,14 +42,6 @@ class GameState_Example(AIsometricSceneState):
         object_rect = pygame.Surface((object_rect_width, 2*tileSize-object_rect_width/2))
         object_rect.fill((255,0,0))
         return Person(x, y, object_rect, -object_rect_width/2, -2*tileSize+object_rect_width/2, debug_draw_mode=True, selectable_hover_display=True)
-
-    def load_isometric_tile_texture(self, path, sheet_rows, sheet_cols, sheet_x_selector, sheet_y_selector) -> int:
-        texture_sheet = pygame.image.load(path)
-        texture = pygame.Surface((texture_sheet.get_width()/sheet_cols, texture_sheet.get_height()/sheet_rows))
-        texture.blit(texture_sheet, (0,0), (sheet_x_selector*texture_sheet.get_width()/sheet_cols,sheet_y_selector*texture_sheet.get_height()/sheet_rows,texture_sheet.get_width()/sheet_cols, texture_sheet.get_height()/sheet_rows))
-        texture.set_colorkey((0,0,0))
-        self.isometric_textures_sprites.append(texture)
-        return len(self.isometric_textures_sprites)-1
     
     def update_keyboard_control(self):
         if SKeyboard.keys[pygame.K_UP]:
@@ -70,9 +55,6 @@ class GameState_Example(AIsometricSceneState):
 
     def tick(self):
         pass
-
-    def get_tile_image_from_map_coordinate(self, x, y):
-        return self.isometric_textures_sprites[self.grass_terrain]
 
     def draw_at_tile_coordinate(self, x, y):
         tileSize = self.tileSize

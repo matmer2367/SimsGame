@@ -3,6 +3,7 @@ import math
 from typing import List
 
 import singletons
+import singletons.SIsometricMapRenderer
 import singletons.SMap
 import singletons.SIsometricTransform
 
@@ -10,6 +11,7 @@ class SCamera:
     def __init__(self, x, y, s = 1) -> None:
         self.transform: singletons.SIsometricTransform.SIsometricTransform = singletons.SIsometricTransform.instance
         self.map: singletons.SMap.SMap = singletons.SMap.instance
+        self.isometricMapRenderer: singletons.SIsometricMapRenderer.SIsometricMapRenderer = singletons.SIsometricMapRenderer.instance
 
         self.reset_value_x = x
         self.reset_value_y = y
@@ -100,5 +102,8 @@ class SCamera:
             self.ZOOM_STEP_COUNTER = self.scale_cap_max//self.scale_step
         
         self.s = self.ZOOM_STEP_COUNTER*self.scale_step
+
+        print(self.s)
+        self.isometricMapRenderer.set_current_mip_map_image(self.s-1)
 
 instance: SCamera = None

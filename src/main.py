@@ -6,6 +6,7 @@ import Utils.file_load as file_load
 import singletons
 import singletons.SCamera
 import singletons.SCameraDragController
+import singletons.SIsometricMapRenderer
 import singletons.SMap
 import singletons.SMouse
 import singletons.SStateMachine
@@ -22,9 +23,11 @@ def initialize_singletons():
     singletons.SIsometricTransform.instance = singletons.SIsometricTransform.SIsometricTransform(screen)
     singletons.SCameraDragController.instance = singletons.SCameraDragController.SCameraDragController()
     singletons.SMouse.instance = singletons.SMouse.SMouse()
+    singletons.SIsometricMapRenderer.instance = singletons.SIsometricMapRenderer.SIsometricMapRenderer()
 
     singletons.SCamera.instance.transform = singletons.SIsometricTransform.instance
     singletons.SCamera.instance.map = singletons.SMap.instance
+    singletons.SCamera.instance.isometricMapRenderer = singletons.SIsometricMapRenderer.instance
 
     singletons.SCameraDragController.instance.mouse = singletons.SMouse.instance
 

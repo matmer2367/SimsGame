@@ -1,6 +1,7 @@
 import singletons
 import singletons.SCamera
 import singletons.SCameraDragController
+import singletons.SIsometricMapRenderer
 import singletons.SMap
 import singletons.SMouse
 import singletons.SStateMachine
@@ -11,6 +12,7 @@ def run():
     assert camera is not None
     assert camera.map is not None
     assert camera.transform is not None
+    assert camera.isometricMapRenderer is not None
 
     camera_drag_controller: singletons.SCameraDragController.SCameraDragController = singletons.SCameraDragController.instance
     assert camera_drag_controller is not None
@@ -29,6 +31,12 @@ def run():
     assert mouse is not None
     assert mouse.camera_drag_controller is not None
 
-    state_machine: singletons.SStateMachine = singletons.SStateMachine.instance
+    state_machine: singletons.SStateMachine.SStateMachine = singletons.SStateMachine.instance
     assert state_machine is not None
+
+    isometric_map_renderer: singletons.SIsometricMapRenderer.SIsometricMapRenderer = singletons.SIsometricMapRenderer.instance
+    assert isometric_map_renderer is not None
+    assert isometric_map_renderer.cam is not None
+    assert isometric_map_renderer.transform is not None
+    assert isometric_map_renderer.map is not None
     
