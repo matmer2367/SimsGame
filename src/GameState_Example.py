@@ -3,9 +3,9 @@ from typing import Tuple, List
 
 from GameObject import Person, GameObject
 import pygame
+import game_data.SCameraDragController
 from map_gameObject_query import Map_GameObject_Query
-from singletons import SKeyboard
-from singletons.SCameraDragController import SCameraDragController
+import game_data
 
 from mouse_callback.MouseCallbackList import MouseCallbackList
 
@@ -17,7 +17,7 @@ class GameState_Example(AIsometricSceneState):
         cbl =  super().create_mouse_callback_list()
         cbl.add_callbacks_to_listener(mouse_pressed_right_out_callback=self.mouse_pressed_right_out_event)
 
-        camera_drag_controller = SCameraDragController()
+        camera_drag_controller = game_data.SCameraDragController.SCameraDragController()
         cbl.add_IMouseClickButtons_callbacks(camera_drag_controller)
         cbl.add_IMouseMotion_callbacks(camera_drag_controller)
 
@@ -44,13 +44,13 @@ class GameState_Example(AIsometricSceneState):
         return Person(x, y, object_rect, -object_rect_width/2, -2*tileSize+object_rect_width/2, debug_draw_mode=True, selectable_hover_display=True)
     
     def update_keyboard_control(self):
-        if SKeyboard.keys[pygame.K_UP]:
+        if game_data.SKeyboard.keys[pygame.K_UP]:
             self.cam.y -= self.cam.keyboard_movement_speed/self.cam.s
-        if SKeyboard.keys[pygame.K_DOWN]:
+        if game_data.SKeyboard.keys[pygame.K_DOWN]:
             self.cam.y += self.cam.keyboard_movement_speed/self.cam.s
-        if SKeyboard.keys[pygame.K_RIGHT]:
+        if game_data.SKeyboard.keys[pygame.K_RIGHT]:
             self.cam.x += self.cam.keyboard_movement_speed/self.cam.s
-        if SKeyboard.keys[pygame.K_LEFT]:
+        if game_data.SKeyboard.keys[pygame.K_LEFT]:
             self.cam.x -= self.cam.keyboard_movement_speed/self.cam.s
 
     def tick(self):

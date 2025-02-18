@@ -1,16 +1,13 @@
 import pygame
-import singletons
-import singletons.SCamera
-import singletons.SIsometricTransform
-import singletons.SMap
+import game_data
 
 from typing import List
 
 class SIsometricMapRenderer:
     def __init__(self):
-        self.cam = singletons.SCamera.instance
-        self.map = singletons.SMap.instance
-        self.transform = singletons.SIsometricTransform.instance
+        self.cam = game_data.SCamera.instance
+        self.map = game_data.SMap.instance
+        self.transform = game_data.SIsometricTransform.instance
 
         self.tileSize = self.map.tile_size
 
@@ -63,7 +60,7 @@ class SIsometricMapRenderer:
 
             for xp in range(map_width):
                 for yp in range(map_height):
-                    dx, dy = singletons.SIsometricTransform.isometricTransform((xp*tileSize, yp*tileSize))
+                    dx, dy = game_data.SIsometricTransform.isometricTransform((xp*tileSize, yp*tileSize))
                     dx += tileSize*map_width
                     image = self.get_tile_image_from_map_coordinate(xp, yp)
                     scaled_image = pygame.transform.scale(image,(tileSize*2,tileSize))

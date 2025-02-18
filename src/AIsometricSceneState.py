@@ -1,20 +1,10 @@
 import pygame
-import singletons.SIsometricTransform
-import singletons.SMap as SMap
+import game_data
 from typing import List, Tuple
 from GameObject import GameObject, Person
 from map_gameObject_query import Map_GameObject_Query
 from Utils import fmath
 
-import singletons.SCamera as SCamera
-import singletons.SMouse
-import singletons.SIsometricTransform as SIsometricTransform
-import singletons.SIsometricMapRenderer as SIsometricMapRenderer
-
-from singletons.SMouse import SMouse
-import singletons
-
-import singletons.SKeyboard as SKeyboard
 from AState import AState
 
 from mouse_callback.MouseCallbackList import MouseCallbackList
@@ -22,9 +12,9 @@ from mouse_callback.MouseCallbackList import MouseCallbackList
 class AIsometricSceneState(AState):
     def __init__(self, screen):
         super().__init__(screen)
-        self.map = SMap.instance
+        self.map = game_data.SMap.instance
         self.tileSize = self.map.tile_size
-        self.isometric_map_renderer = SIsometricMapRenderer.instance
+        self.isometric_map_renderer = game_data.SIsometricMapRenderer.instance
 
         self.game_objects: List[GameObject] = []
         self.game_objects_map_query = Map_GameObject_Query(self.game_objects)

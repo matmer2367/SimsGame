@@ -3,35 +3,26 @@ import pygame
 from GameState_Example import GameState_Example
 
 import Utils.file_load as file_load
-import singletons
-import singletons.SCamera
-import singletons.SCameraDragController
-import singletons.SIsometricMapRenderer
-import singletons.SMap
-import singletons.SMouse
-import singletons.SStateMachine
-import singletons.SIsometricTransform
-import singletons.SKeyboard as SKeyboard
-import singletons.test_instances
+import game_data
 
 screen: pygame.Surface = None
 
 def initialize_singletons():
-    singletons.SStateMachine.instance = singletons.SStateMachine.SStateMachine()
-    singletons.SMap.instance = singletons.SMap.SMap(file_load.load("../res/map.yaml")["map"], 10)
-    singletons.SCamera.instance = singletons.SCamera.SCamera(screen.get_width()/2,(screen.get_height()/2)+singletons.SMap.instance.height*singletons.SMap.instance.tile_size/2)
-    singletons.SIsometricTransform.instance = singletons.SIsometricTransform.SIsometricTransform(screen)
-    singletons.SCameraDragController.instance = singletons.SCameraDragController.SCameraDragController()
-    singletons.SMouse.instance = singletons.SMouse.SMouse()
-    singletons.SIsometricMapRenderer.instance = singletons.SIsometricMapRenderer.SIsometricMapRenderer()
+    game_data.SStateMachine.instance = game_data.SStateMachine.SStateMachine()
+    game_data.SMap.instance = game_data.SMap.SMap(file_load.load("../res/map.yaml")["map"], 10)
+    game_data.SCamera.instance = game_data.SCamera.SCamera(screen.get_width()/2,(screen.get_height()/2)+game_data.SMap.instance.height*game_data.SMap.instance.tile_size/2)
+    game_data.SIsometricTransform.instance = game_data.SIsometricTransform.SIsometricTransform(screen)
+    game_data.SCameraDragController.instance = game_data.SCameraDragController.SCameraDragController()
+    game_data.SMouse.instance = game_data.SMouse.SMouse()
+    game_data.SIsometricMapRenderer.instance = game_data.SIsometricMapRenderer.SIsometricMapRenderer()
 
-    singletons.SCamera.instance.transform = singletons.SIsometricTransform.instance
-    singletons.SCamera.instance.map = singletons.SMap.instance
-    singletons.SCamera.instance.isometricMapRenderer = singletons.SIsometricMapRenderer.instance
+    game_data.SCamera.instance.transform = game_data.SIsometricTransform.instance
+    game_data.SCamera.instance.map = game_data.SMap.instance
+    game_data.SCamera.instance.isometricMapRenderer = game_data.SIsometricMapRenderer.instance
 
-    singletons.SCameraDragController.instance.mouse = singletons.SMouse.instance
+    game_data.SCameraDragController.instance.mouse = game_data.SMouse.instance
 
-    singletons.test_instances.run()
+    game_data.test_instances.run()
 
 def main():
     running_value = True
@@ -44,8 +35,8 @@ def main():
     
     initialize_singletons()
 
-    mouse = singletons.SMouse.instance
-    state_machine = singletons.SStateMachine.instance
+    mouse = game_data.SMouse.instance
+    state_machine = game_data.SStateMachine.instance
 
     #mouse.add_callbacks_to_listener(cam.update_mousewheel_zoom)
     state_machine.currentState = GameState_Example(screen)
@@ -55,7 +46,7 @@ def main():
             if event.type == pygame.QUIT:
                 running_value = False
 
-            SKeyboard.update_keystates(event)
+            game_data.SKeyboard.update_keystates(event)
             mouse.update_based_on_event(event)
 
         state_machine.currentState.update()

@@ -1,7 +1,6 @@
 import pygame
 
-import singletons.SIsometricTransform as SIsometricTransform
-import singletons.SCamera as SCamera
+import game_data
 
 class GameObject:
     def __init__(self, x, y, surface, draw_offset_x = 0, draw_offset_y = 0, debug_draw_mode = False, debug_draw_pivot_color = (0,0,0), selectable_hover_display = False) -> None:
@@ -21,8 +20,8 @@ class GameObject:
 
         self.selectable_hover_display = selectable_hover_display
 
-        self.transform = SIsometricTransform.instance
-        self.cam = SCamera.instance
+        self.transform = game_data.SIsometricTransform.instance
+        self.cam = game_data.SCamera.instance
     
     def get_transformed_isometric_screen_pivot_coordinate(self):
         return self.transform.get_transformed_isometric_screen_position(self.x_pivot, self.y_pivot)

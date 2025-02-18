@@ -1,16 +1,14 @@
 import pygame
 from Utils import fmath
 from typing import Callable, Tuple, List
-import singletons
-import singletons.SCamera
-import singletons.SCameraDragController
+import game_data
 from mouse_callback.MouseCallbackList import MouseCallbackList
 
 class SMouse:
     def __init__(self):
         self.last_left_button_pressed_in_position = self.last_right_button_pressed_in_position = self.last_mouse_position = (0,0)
         self.mouse_position_in_world = (0,0)
-        self.camera_drag_controller = singletons.SCameraDragController.instance
+        self.camera_drag_controller = game_data.SCameraDragController.instance
 
         self.mouse_callback_list: MouseCallbackList = None
 

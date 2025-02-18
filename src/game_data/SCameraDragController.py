@@ -1,18 +1,16 @@
-import singletons
+import game_data
 
 from Utils import fmath
 from typing import Tuple, List
 
-import singletons.SCamera
 
 from mouse_callback.interfaces.IMouseClickButtons import IMouseClickButtons
 from mouse_callback.interfaces.IMouseMotion import IMouseMotion
-import singletons.SMouse 
 
 class SCameraDragController(IMouseClickButtons, IMouseMotion):
     def __init__(self):
-        self.cam = singletons.SCamera.instance
-        self.mouse = singletons.SMouse.instance
+        self.cam = game_data.SCamera.instance
+        self.mouse = game_data.SMouse.instance
         self.left_button_pressed = False
         self.drag_current_vel: List[float] = [0,0]
 

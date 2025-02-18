@@ -1,7 +1,5 @@
 import pygame
-import singletons
-import singletons.SCamera
-import singletons.SMap
+import game_data
 
 
 def get_transformed_cam_on_screen_center(screen_width, screen_height, pcam_x, pcam_y, scale, x, y, width, height):
@@ -14,8 +12,8 @@ def isometricTransform(pos):
 class SIsometricTransform:
     def __init__(self, screen) -> None:
         self.screen: pygame.Surface = screen
-        self.cam: singletons.SCamera.SCamera = singletons.SCamera.instance
-        self.map: singletons.SMap.SMap = singletons.SMap.instance
+        self.cam: game_data.SCamera.SCamera = game_data.SCamera.instance
+        self.map: game_data.SMap.SMap = game_data.SMap.instance
 
     def rect_in_viewport(self, rect_data) -> bool:
         x1 = rect_data[0]
