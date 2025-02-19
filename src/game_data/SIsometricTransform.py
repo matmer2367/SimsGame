@@ -83,6 +83,7 @@ class SIsometricTransform:
         return 0 <= tx <= self.screen.get_width() and 0 <= ty <= self.screen.get_height()
     
     # Draw Stuff Methods ###############################################
+    # TODO Higher level function
     def drawTransformedIsometricRect(self, color, x, y, w, h):
         if not (self.isInScreenViewPort(x,y) or self.isInScreenViewPort(x+w,y) or self.isInScreenViewPort(x,y+h) or self.isInScreenViewPort(x+w, y+h)):
             return

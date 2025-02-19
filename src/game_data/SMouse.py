@@ -6,9 +6,10 @@ from mouse_callback.MouseCallbackList import MouseCallbackList
 
 class SMouse:
     def __init__(self):
-        self.last_left_button_pressed_in_position = self.last_right_button_pressed_in_position = self.last_mouse_position = (0,0)
-        self.mouse_position_in_world = (0,0)
         self.camera_drag_controller = game_data.SCameraDragController.instance
+        
+        self.mouse_position_in_world = (0,0)
+        self.last_left_button_pressed_in_position = self.last_right_button_pressed_in_position = self.last_mouse_position = (0,0)
 
         self.mouse_callback_list: MouseCallbackList = None
 

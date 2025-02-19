@@ -11,6 +11,8 @@ class SCameraDragController(IMouseClickButtons, IMouseMotion):
     def __init__(self):
         self.cam = game_data.SCamera.instance
         self.mouse = game_data.SMouse.instance
+        
+        self.camera_position_when_drag_started: List[float] = [0,0]
         self.left_button_pressed = False
         self.drag_current_vel: List[float] = [0,0]
 
@@ -19,8 +21,8 @@ class SCameraDragController(IMouseClickButtons, IMouseMotion):
     def pressed_left_in(self, pos: Tuple[int]) -> None:
         self.left_button_pressed = True
 
-        self.cam.last_position[0] = self.cam.x
-        self.cam.last_position[1] = self.cam.y
+        self.camera_position_when_drag_started[0] = self.cam.x
+        self.camera_position_when_drag_started[1] = self.cam.y
 
         self.cam.is_floating = False
         self.cam.velocity[0] = 0
@@ -47,7 +49,7 @@ class SCameraDragController(IMouseClickButtons, IMouseMotion):
         if self.left_button_pressed:
             self.drag_current_vel = [movement_delta[0]/self.cam.s, movement_delta[1]/self.cam.s]
             if fmath.get_vector_magnitude(positional_delta) >= self.DRAG_DELTA_THRESHOLD:
-                self.cam.x = self.cam.last_position[0]-positional_delta[0]/self.cam.s
-                self.cam.y = self.cam.last_position[1]-positional_delta[1]/self.cam.s
+                self.cam.x = self.camera_position_when_drag_started[0]-positional_delta[0]/self.cam.s
+                self.cam.y = self.camera_position_when_drag_started[1]-positional_delta[1]/self.cam.s
 
 instance: SCameraDragController = None

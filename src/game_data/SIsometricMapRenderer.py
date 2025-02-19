@@ -11,18 +11,14 @@ class SIsometricMapRenderer:
 
         self.tileSize = self.map.tile_size
 
-        self.current_mip_map_level = 0
-        self.current_mip_map_image = None
+        self.current_mip_map_level = 0#
+        self.current_mip_map_image = None#
 
-        self.map_draw_x = 0
-        self.map_draw_y = 0
-        self.map_draw_w = 0
-        self.map_draw_h = 0
+        self.MIP_MAP_LEVELS = 5#
+        self.map_buffer_images: List[pygame.Surface] = []#
 
-        self.MIP_MAP_LEVELS = 5
-        self.map_buffer_images: List[pygame.Surface] = []
+        self.isometric_textures_sprites = []#
 
-        self.isometric_textures_sprites = []
         self.grass_terrain = self.load_isometric_tile_texture("../res/sprites/terrain_sheet.png", 6, 3, 0, 0)
 
     def set_current_mip_map_image(self, level: int):
@@ -30,8 +26,6 @@ class SIsometricMapRenderer:
             return
         self.current_mip_map_level = level
         self.current_mip_map_image = self.map_buffer_images[level]
-        self.map_draw_w = self.current_mip_map_image.get_width()
-        self.map_draw_h = self.current_mip_map_image.get_height()
 
     def get_tile_image_from_map_coordinate(self, x, y):
         return self.isometric_textures_sprites[self.grass_terrain]

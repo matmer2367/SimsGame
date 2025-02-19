@@ -12,18 +12,19 @@ class SCamera:
 
         self.x = x#
         self.y = y#
+        self.s = s#
 
-        self.last_position: List[float] = [0,0]
+        
         self.velocity = [0,0]#
         self.velocity_magnitude_threshold = .2#
         self.velocity_friction_multiplier = 0.85#
-        self.is_floating = False
-        self.scale_step = s
-        self.keyboard_movement_speed = 6
-        self.scale_cap_min, self.scale_cap_max = 1, 30
-        self.ZOOM_STEP_COUNTER = (self.scale_cap_max-self.scale_cap_min)//15
-        self.s = self.ZOOM_STEP_COUNTER*self.scale_step#
+        self.is_floating = False#
+        self.scale_step = 1#
+        self.keyboard_movement_speed = 6#
+        self.scale_cap_min, self.scale_cap_max = 1, 30#
+        self.zoom_step_counter = (self.scale_cap_max-self.scale_cap_min)//15#
 
+        # \/
         self.cam_border_left_x, self.cam_border_left_y, self.cam_border_right_x, self.cam_border_right_y = 0,0,0,0
 
     def update_bounding_box_for_its_current_scale(self):
@@ -63,16 +64,16 @@ class SCamera:
     def update_mousewheel_zoom(self, zoom_factor):
         cam_zoom_multiplier = math.floor(self.s*.3)
         if cam_zoom_multiplier >= 1:
-            self.ZOOM_STEP_COUNTER += zoom_factor*cam_zoom_multiplier
+            self.zoom_step_counter += zoom_factor*cam_zoom_multiplier
         else:
-            self.ZOOM_STEP_COUNTER += zoom_factor
+            self.zoom_step_counter += zoom_factor
 
-        if self.ZOOM_STEP_COUNTER < self.scale_cap_min//self.scale_step:
-            self.ZOOM_STEP_COUNTER = self.scale_cap_min//self.scale_step
-        if self.ZOOM_STEP_COUNTER > self.scale_cap_max//self.scale_step:
-            self.ZOOM_STEP_COUNTER = self.scale_cap_max//self.scale_step
+        if self.zoom_step_counter < self.scale_cap_min//self.scale_step:
+            self.zoom_step_counter = self.scale_cap_min//self.scale_step
+        if self.zoom_step_counter > self.scale_cap_max//self.scale_step:
+            self.zoom_step_counter = self.scale_cap_max//self.scale_step
         
-        self.s = self.ZOOM_STEP_COUNTER*self.scale_step
+        self.s = self.zoom_step_counter*self.scale_step
 
         self.isometricMapRenderer.set_current_mip_map_image(self.s-1)
 

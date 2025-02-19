@@ -1,0 +1,5 @@
+from game_data.camera.physics import CameraPhysicalAttributes
+from game_logic.math.vector import vector_magnitude_is_over_threshold
+
+def isFloating(camera_physical_attributes: CameraPhysicalAttributes):
+    return vector_magnitude_is_over_threshold(camera_physical_attributes.velocity, camera_physical_attributes.velocity_magnitude_threshold)
