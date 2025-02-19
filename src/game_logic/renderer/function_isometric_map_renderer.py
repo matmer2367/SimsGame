@@ -1,6 +1,9 @@
 import pygame
 
+from game_data.game_context.world.map.map import Map
+from game_data.rendering.sprite_sheet.sprite_sheet import SpriteSheet
 from game_data.rendering.viewport.viewport_dimensions import ViewportDimensions
+from game_logic.map.functions import get_tile_image_from_map_coordinate
 from game_logic.math import isometric_transformations
 
 from game_data.camera.transform import CameraTransform
@@ -20,13 +23,13 @@ def load_isometric_tile_texture(path, sheet_rows, sheet_cols, sheet_x_selector, 
     texture.set_colorkey((0,0,0))
     return texture
 
-def render_image_buffer_map(game_map: MapMetaData, mip_mapping: MipMapping):
+def render_image_buffer_map(game_map: Map, mip_mapping: MipMapping, sprite_sheet: SpriteSheet):
     mip_mapping.buffer_images.clear()
 
     for i in range(1, mip_mapping.max_level+1):
-        map_height = game_map.height
-        map_width = game_map.width
-        tileSize = game_map.tile_size*i
+        map_height = game_map.meta_data.height
+        map_width = game_map.meta_data.width
+        tileSize = game_map.meta_data.tile_size*i
 
         map_draw_w = tileSize*map_width*2
         map_draw_h = tileSize*map_height
@@ -38,7 +41,7 @@ def render_image_buffer_map(game_map: MapMetaData, mip_mapping: MipMapping):
             for yp in range(map_height):
                 dx, dy = isometric_transformations.isometricTransform((xp*tileSize, yp*tileSize))
                 dx += tileSize*map_width
-                image = idk.get_tile_image_from_map_coordinate(xp, yp)
+                image = get_tile_image_from_map_coordinate(xp, yp, sprite_sheet=sprite_sheet, map=game_map)
                 scaled_image = pygame.transform.scale(image,(tileSize*2,tileSize))
                 newImage.blit(scaled_image, (dx-tileSize, dy))
 

@@ -1,0 +1,1 @@
+GRASS_IMAGE = 0
