@@ -1,7 +1,7 @@
 import math
 import pygame
 
-from game_data.game_context.world.map.map_metadata import MapMetaData
+from game_data.game_context.world.game_map.map_metadata import MapMetaData
 from game_data.rendering.viewport.viewport_dimensions import ViewportDimensions
 from game_logic.math import isometric_transformations
 

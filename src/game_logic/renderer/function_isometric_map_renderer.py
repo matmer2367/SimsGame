@@ -1,13 +1,13 @@
 import pygame
 
-from game_data.game_context.world.map.map import Map
+from game_data.game_context.world.game_map.map import Map
 from game_data.rendering.sprite_sheet.sprite_sheet import SpriteSheet
 from game_data.rendering.viewport.viewport_dimensions import ViewportDimensions
 from game_logic.map.functions import get_tile_image_from_map_coordinate
 from game_logic.math import isometric_transformations
 
 from game_data.camera.transform import CameraTransform
-from game_data.game_context.world.map.map_metadata import MapMetaData
+from game_data.game_context.world.game_map.map_metadata import MapMetaData
 from game_data.rendering.mip_mapping import MipMapping
 
 def set_current_mip_map_image(mip_mapping: MipMapping, new_level: int):

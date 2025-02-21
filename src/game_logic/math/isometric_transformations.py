@@ -1,6 +1,6 @@
 from game_data.camera.movement_bounds import CameraMovementBounds
 from game_data.camera.transform import CameraTransform
-from game_data.game_context.world.map.map_metadata import MapMetaData
+from game_data.game_context.world.game_map.map_metadata import MapMetaData
 from game_data.physics.rectangle import Rectangle
 from game_data.rendering.viewport.viewport import ViewPort
 from game_data.rendering.viewport.viewport_dimensions import ViewportDimensions
