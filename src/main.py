@@ -2,9 +2,11 @@ import pygame
 
 from Utils import file_load
 
-import ssgame
+import ssgame_deprecated
 
-def main():
+import ssgame_tools
+
+def main_deprecated():
     running_value = True
 
     # pygame setup
@@ -12,20 +14,20 @@ def main():
     screen = pygame.display.set_mode((1080, 720), pygame.RESIZABLE, vsync=1)
     clock = pygame.time.Clock()
     
-    ssgame.init(file_load.load("../res/map.yaml")["map"], 10, screen)
+    ssgame_deprecated.init(file_load.load("../res/map.yaml")["map"], 10, screen)
 
-    mouse = ssgame.dataset.SMouseInstance
-    state_machine = ssgame.dataset.StateMachineInstance
+    mouse = ssgame_deprecated.dataset.SMouseInstance
+    state_machine = ssgame_deprecated.dataset.StateMachineInstance
 
     #mouse.add_callbacks_to_listener(cam.update_mousewheel_zoom)
-    state_machine.currentState =ssgame.GameState_Example(screen)
+    state_machine.currentState =ssgame_deprecated.GameState_Example(screen)
     mouse.mouse_callback_list = state_machine.currentState.mouse_callback_list
     while running_value:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running_value = False
 
-            ssgame.dataset.SKeyboard.update_keystates(event)
+            ssgame_deprecated.dataset.SKeyboard.update_keystates(event)
             mouse.update_based_on_event(event)
 
         state_machine.currentState.update()
@@ -37,4 +39,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main_deprecated()
